@@ -44,12 +44,19 @@ ui <- dashboardPage(skin = "purple",
                               value = uiOutput("orders2"),
                               icon = icon("adress-card")),
                             box(
-                              title = "Sale Histogram ",
-                              status= "warning",
+                              title = "Data Plot ",
+                              status= "primary",
                               solidHeader = TRUE,
                               collapsible = TRUE,
                               width = 500,
-                              plotOutput("histplot",height = "300"))
+                              plotOutput("histplot", height = "300")),
+                            box(
+                              title = "Data Plot 2 ",
+                              status= "success",
+                              solidHeader = TRUE,
+                              collapsible = TRUE,
+                              width = 500,
+                              plotOutput("histplot2", click="histplot2_click"))
                           ),
                           ),
                         tabItem(
@@ -76,6 +83,12 @@ server <- function(input, output) {
   })
   output$histplot<- renderPlot({
     hist(rnorm(input$orders), main="", xlab="Orders")
+  })
+  output$histplot2<- renderPlot({
+    plot(mtcars$wt, mtcars$mpg, xlab = "WT", ylab = "MPG")
+  })
+  output$info<- renderText({
+    paste0("x=",input$histplot2_click$x, "\ny=", input$histplot2_click$y)
   })
   }
 
